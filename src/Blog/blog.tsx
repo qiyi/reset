@@ -1,50 +1,20 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { number } from 'prop-types';
+import {WPSite, WPPost, WPAuthor } from './WordPress/wordpress';
+import Header from './Header/header';
+import Footer from './Footer/footer';
 import './blog.css'
+import Home from './Home/home';
 
 export interface BlogProps {
   baseUri: string
 }
 
-export class BlogInfo {
-  name: string
-  description: string
-}
-
-export class Reply {
-
-}
-export class Author {
-  id: number
-  name: string
-}
-
-export class PostContent {
-  protected: boolean
-  rendered: string
-}
-
-export class TitleContent {
-  rendered: string
-}
-
-export class Post {
-  id: number
-  author: number
-  tags: number[]
-  date: string
-  status: string
-  link: string
-  title: TitleContent
-  content: PostContent
-  replies: Reply[]
-}
-
 export interface BlogState {
-  blog: BlogInfo
-  posts: Post[]
-  authors: Map<number, Author>
+  site: WPSite
+  posts: WPPost[]
+  authors: Map<number, WPAuthor>
 }
 
 
@@ -59,31 +29,31 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
     fetch(baseUri)
     .then(res => res.json())
     .then(data => {
-      const blog = Object.assign(new BlogInfo(), data);
+      const site = Object.assign(new WPSite(), data);
       fetch(baseUri + 'wp/v2/posts')
         .then(res => res.json())
         .then( data => {
           let ids = new Set<number>();
-          let posts: Post[] = [];
+          let posts: WPPost[] = [];
           for (let postData of data) {
-            const post = Object.assign(new Post(), postData);
+            const post = Object.assign(new WPPost(), postData);
             posts.push(post);
             ids.add(post.author);
           }
-          let authors = new Map<number, Author>();
+          let authors = new Map<number, WPAuthor>();
           let promises: Array<Promise<any>> = [];
           ids.forEach(id=>{
             promises.push(fetch(baseUri + 'wp/v2/users/' + id)
               .then(res => res.json())
               .then(data => {
-                const author = Object.assign(new Author(), data);
+                const author = Object.assign(new WPAuthor(), data);
                 authors.set(id, author);
               })
               .catch(err=>console.error(err))
             );
           });
           Promise.all(promises)
-            .then(()=> this.setState({blog, posts, authors}));
+            .then(()=> this.setState({site, posts, authors}));
         })
         .catch(err => console.error(err));
     })
@@ -94,26 +64,7 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
     if(!this.state) {
       return '';
     }
-    const {blog, posts, authors} = this.state;
-    return (
-      <div className="page">
-        <div className="header">
-          <h1 className="blog-title">{blog ? blog.name : ''}</h1>
-        </div>
-        <div className="posts">
-        {
-          posts ? posts.map(post => 
-            (
-              <div key={post.id} className="post" id={String(post.id)}>
-                <h2 className="post-title">{post.title.rendered}</h2>
-                <div className="post-meta">{new Date(post.date).toLocaleString() + ' by ' + authors.get(post.author).name}</div>
-                <div className="post-content" dangerouslySetInnerHTML={{__html: post.content.rendered}}></div>
-              </div>
-            )
-          ) : ''
-        }
-        </div>
-      </div>
-    );
+    const {site, posts, authors} = this.state;
+    return (<Home site={site} posts={posts} authors={authors} />);
   }
 }

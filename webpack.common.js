@@ -9,14 +9,21 @@ module.exports = {
     new CleanWebpackPlugin(),
     new ExtractTextWebpackPlugin("styles.css"),
     new HtmlWebpackPlugin({
-      title: "Pink",
+      title: "iSouth",
       inject: false,
       template: require('html-webpack-template'),
       appMountId: 'app',
+      meta: [{
+        name: 'theme-color',
+        content: 'rgb(10, 134, 149)',
+      }],
       mobile: true,
+      links: [
+        '//fonts.googleapis.com/css?family=Short+Stack'
+      ],
       scripts: [
-        '//unpkg.com/react@16/umd/react.development.js',
-        '//unpkg.com/react-dom@16/umd/react-dom.development.js'
+        '//unpkg.com/react@16/umd/react.production.min.js',
+        '//unpkg.com/react-dom@16/umd/react-dom.production.min.js'
       ]
       // headHtmlSnippet: '<script>document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + "px"</script>'
     }),
