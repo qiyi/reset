@@ -1,0 +1,33 @@
+
+.header {
+  background-color: rgb(0, 188,212);
+  color: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+}
+
+.blog-title {
+  margin-left: 18px;
+  font-family: 'Comic Sans MS';
+  font-size: 32px;
+}
+
+.post-meta {
+  font-size: 14px;
+  color: #666;
+}
+
+.posts {
+  margin-top: 20px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.post {
+  margin-bottom: 20px;
+}
+.post-title {
+  font-weight: bold;
+}
+.post-content {
+  line-height: 1.75;
+}
