@@ -63,7 +63,7 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
   render() {
     if(!this.state) {
       return '';
-    }
+    } 
     const {site, posts, authors} = this.state;
     return (<Home site={site} posts={posts} authors={authors} />);
   }

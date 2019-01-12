@@ -1,0 +1,14 @@
+.header {
+  height: 54px;
+  display: flex;
+  align-items: center;
+  background-color: rgb(0, 188,212);
+  color: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+}
+
+.blog-title {
+  margin-left: 18px;
+  font-family: 'Short Stack', cursive, sans-serif;
+  font-size: 32px;
+}

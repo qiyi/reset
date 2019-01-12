@@ -4,6 +4,7 @@ import Header from '../Header/header';
 import { WPSite, WPPost, WPAuthor } from '../WordPress/wordpress';
 import Footer from '../Footer/footer';
 import Post from '../Post/post';
+import './home.css';
 
 export interface HomeProps {
   site: WPSite

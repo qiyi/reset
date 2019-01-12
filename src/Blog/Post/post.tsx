@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { WPPost, WPAuthor } from '../WordPress/wordpress';
+import './post.css';
 
 export interface PostProps {
   post: WPPost

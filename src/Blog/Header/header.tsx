@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {WPSite} from '../WordPress/wordpress';
+import './header.css';
 
 export interface HeaderProps {
   site: WPSite
