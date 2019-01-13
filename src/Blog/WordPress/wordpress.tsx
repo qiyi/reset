@@ -17,6 +17,11 @@ export class WPPostContent {
   rendered: string
 }
 
+export class WPPostExcerpt {
+  protected: boolean
+  rendered: string
+}
+
 export class WPTitleContent {
   rendered: string
 }
@@ -29,6 +34,7 @@ export class WPPost {
   status: string
   link: string
   title: WPTitleContent
+  excerpt: WPPostExcerpt
   content: WPPostContent
   replies: WPReply[]
 }

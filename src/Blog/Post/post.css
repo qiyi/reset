@@ -1,6 +1,8 @@
 
 .post {
   margin-bottom: 20px;
+  max-width: 100%;
+  overflow: auto;
 }
 
 .post-title {
@@ -22,10 +24,20 @@
   margin-top: 8px;
 }
 
-.post-content pre {
+.post-content pre, .post-content code{
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 8px;
   border: 1px dashed #666;
   background-color:  #e3e3e3;
+  overflow: auto;
   padding: 1px 4px;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 14px;
+}
+
+.post-content .blockcode {
+  overflow: auto;
 }
 
 .post-content img {

@@ -15,7 +15,16 @@ module.exports = {
       appMountId: 'app',
       meta: [{
         name: 'theme-color',
-        content: 'rgb(10, 134, 149)',
+        content: '#3F51B5'
+      },  {
+        name: 'mobile-web-app-capable',
+        content: 'yes'
+      }, {
+        name: 'apple-mobile-web-app-capable',
+        content: 'yes'
+      }, {
+        name: 'apple-mobile-web-app-status-bar-style',
+        content: '#3F51B5'
       }],
       mobile: true,
       links: [
