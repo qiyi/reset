@@ -4,7 +4,7 @@ import './footer.css';
 
 const Footer = () => (
   <div className="footer">
-    <div>Powered by WordPress&React</div>
+    <div>Powered by WordPress & React</div>
   </div>
 );
 

@@ -30,7 +30,7 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
     .then(res => res.json())
     .then(data => {
       const site = Object.assign(new WPSite(), data);
-      fetch(baseUri + 'wp/v2/posts')
+      fetch(baseUri + 'wp/v2/posts?per_page=5')
         .then(res => res.json())
         .then( data => {
           let ids = new Set<number>();

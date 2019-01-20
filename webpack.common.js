@@ -31,8 +31,8 @@ module.exports = {
         '//fonts.googleapis.com/css?family=Short+Stack'
       ],
       scripts: [
-        '//unpkg.com/react@16/umd/react.production.min.js',
-        '//unpkg.com/react-dom@16/umd/react-dom.production.min.js'
+        '//cdn.jsdelivr.net/npm/react@16.7.0/umd/react.production.min.js',
+        '//cdn.jsdelivr.net/npm/react-dom@16.7.0/umd/react-dom.production.min.js'
       ]
       // headHtmlSnippet: '<script>document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + "px"</script>'
     }),
