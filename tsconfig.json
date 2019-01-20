@@ -2,13 +2,13 @@
   "compilerOptions": {
     "target": "ES2017",
     "sourceMap": true,
-    "outDir": "./dist/",
+    "outDir": "./docs/",
     "noImplicitAny": true,
     "jsx": "react",
     "allowJs": true
   },
   "exclude": [
     "node_modules",
-    "dist"
+    "docs"
   ]
 }
