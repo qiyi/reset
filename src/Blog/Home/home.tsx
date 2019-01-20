@@ -17,7 +17,7 @@ const Home = ({site, posts, authors}: HomeProps) => (
     <Header site={site} />
     <div className="posts">
     {
-      posts ? posts.map(post => <Post post={post} authors={authors} />) : ''
+      posts.map(post => <Post post={post} author={authors.get(post.author)} />)
     }
     </div>
     <Footer />

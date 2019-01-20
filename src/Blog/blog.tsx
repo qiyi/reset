@@ -17,53 +17,67 @@ export interface BlogState {
   authors: Map<number, WPAuthor>
 }
 
-
 export default class Blog extends React.PureComponent<BlogProps, BlogState> {
   constructor(props: BlogProps) {
     super(props);
-    this.state = null;
+    const store = window.localStorage;
+    const site = store.getItem('site');
+    const posts = store.getItem('posts');
+    const authors = store.getItem('authors');
+    this.state = {
+      site: site ? Object.assign(new WPSite(), JSON.parse(site)) : new WPSite(),
+      posts: posts ? Object.assign(new Array<WPPost>(), JSON.parse(posts)) : new Array<WPPost>(),
+      authors: authors ? Object.assign(new Map<string, WPAuthor>(), JSON.parse(authors)): new Map<string, WPAuthor>(),
+    };
   }
 
-  componentDidMount() {
+  getSite = () => {
     const {baseUri} = this.props;
-    fetch(baseUri)
-    .then(res => res.json())
-    .then(data => {
-      const site = Object.assign(new WPSite(), data);
-      fetch(baseUri + 'wp/v2/posts?per_page=5')
-        .then(res => res.json())
-        .then( data => {
-          let ids = new Set<number>();
-          let posts: WPPost[] = [];
-          for (let postData of data) {
-            const post = Object.assign(new WPPost(), postData);
-            posts.push(post);
-            ids.add(post.author);
-          }
-          let authors = new Map<number, WPAuthor>();
-          let promises: Array<Promise<any>> = [];
-          ids.forEach(id=>{
-            promises.push(fetch(baseUri + 'wp/v2/users/' + id)
-              .then(res => res.json())
-              .then(data => {
-                const author = Object.assign(new WPAuthor(), data);
-                authors.set(id, author);
-              })
-              .catch(err=>console.error(err))
-            );
-          });
-          Promise.all(promises)
-            .then(()=> this.setState({site, posts, authors}));
-        })
-        .catch(err => console.error(err));
-    })
-    .catch(err => console.error(err));
+    return fetch(baseUri)
+             .then(res => res.json())
+             .then(data => Object.assign(new WPSite(), data))
+             .catch(err => console.error(err));
+  }
+  
+  getPosts = () => {
+    const store = window.localStorage;
+    const {baseUri} = this.props;
+    return fetch(baseUri + 'wp/v2/posts?per_page=5')
+            .then(res => res.json())
+            .then(data => Object.assign(new Array<WPPost>(), data))
+            .catch(err => console.error(err));
+  }
+
+  getUsers = () => {
+    const {baseUri} = this.props;
+    return fetch(baseUri + 'wp/v2/users')
+             .then(res => res.json())
+             .then(data => Object.assign(new Array<WPAuthor>(), data))
+             .catch(err => console.error(err));
+  }
+
+  async componentDidMount() {
+    const store = window.localStorage;
+    this.getSite()
+      .then(site => {
+        store.setItem('site', JSON.stringify(site));
+        this.setState({site}); 
+      });
+    this.getPosts()
+      .then(posts => {
+        store.setItem('posts', JSON.stringify(posts));
+        this.setState({posts});
+      });
+    this.getUsers()
+      .then(users => {
+        const authors = new Map<number, WPAuthor>();
+        (users as Array<WPAuthor>).forEach(user => authors.set(user.id, user));
+        store.setItem('authors', JSON.stringify(authors));
+        this.setState({authors});
+      });
   }
 
   render() {
-    if(!this.state) {
-      return '';
-    } 
     const {site, posts, authors} = this.state;
     return (<Home site={site} posts={posts} authors={authors} />);
   }
