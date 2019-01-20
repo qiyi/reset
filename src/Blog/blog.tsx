@@ -29,6 +29,7 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
       posts: posts ? Object.assign(new Array<WPPost>(), JSON.parse(posts)) : new Array<WPPost>(),
       authors: authors ? Object.assign(new Map<string, WPAuthor>(), JSON.parse(authors)): new Map<string, WPAuthor>(),
     };
+    console.log(this.state.authors);
   }
 
   getSite = () => {
@@ -36,7 +37,6 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
     return fetch(baseUri)
              .then(res => res.json())
              .then(data => Object.assign(new WPSite(), data))
-             .catch(err => console.error(err));
   }
   
   getPosts = () => {
@@ -45,7 +45,6 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
     return fetch(baseUri + 'wp/v2/posts?per_page=5')
             .then(res => res.json())
             .then(data => Object.assign(new Array<WPPost>(), data))
-            .catch(err => console.error(err));
   }
 
   getUsers = () => {
@@ -53,28 +52,38 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
     return fetch(baseUri + 'wp/v2/users')
              .then(res => res.json())
              .then(data => Object.assign(new Array<WPAuthor>(), data))
-             .catch(err => console.error(err));
   }
-
+  
   async componentDidMount() {
     const store = window.localStorage;
     this.getSite()
       .then(site => {
+        if (!site) {
+          console.error('get site failed.', site);
+          return;
+        }
         store.setItem('site', JSON.stringify(site));
         this.setState({site}); 
-      });
+      })
+      .catch(err => console.error(err));
     this.getPosts()
       .then(posts => {
+        if (!posts) {
+          console.error('get posts failed.', posts);
+          return;
+        }
         store.setItem('posts', JSON.stringify(posts));
         this.setState({posts});
-      });
+      })
+      .catch(err => console.error(err));
     this.getUsers()
       .then(users => {
         const authors = new Map<number, WPAuthor>();
         (users as Array<WPAuthor>).forEach(user => authors.set(user.id, user));
         store.setItem('authors', JSON.stringify(authors));
         this.setState({authors});
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
