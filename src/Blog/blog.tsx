@@ -14,7 +14,7 @@ export interface BlogProps {
 export interface BlogState {
   site: WPSite
   posts: WPPost[]
-  authors: Map<number, WPAuthor>
+  users: Array<WPAuthor>
 }
 
 export default class Blog extends React.PureComponent<BlogProps, BlogState> {
@@ -23,13 +23,12 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
     const store = window.localStorage;
     const site = store.getItem('site');
     const posts = store.getItem('posts');
-    const authors = store.getItem('authors');
+    const users = store.getItem('users');
     this.state = {
       site: site ? Object.assign(new WPSite(), JSON.parse(site)) : new WPSite(),
       posts: posts ? Object.assign(new Array<WPPost>(), JSON.parse(posts)) : new Array<WPPost>(),
-      authors: authors ? Object.assign(new Map<string, WPAuthor>(), JSON.parse(authors)): new Map<string, WPAuthor>(),
+      users: users ? Object.assign(new Array<WPAuthor>(), JSON.parse(users)): new Array<WPAuthor>(),
     };
-    console.log(this.state.authors);
   }
 
   getSite = () => {
@@ -78,16 +77,14 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
       .catch(err => console.error(err));
     this.getUsers()
       .then(users => {
-        const authors = new Map<number, WPAuthor>();
-        (users as Array<WPAuthor>).forEach(user => authors.set(user.id, user));
-        store.setItem('authors', JSON.stringify(authors));
-        this.setState({authors});
+        store.setItem('users', JSON.stringify(users));
+        this.setState({users});
       })
       .catch(err => console.error(err));
   }
 
   render() {
-    const {site, posts, authors} = this.state;
-    return (<Home site={site} posts={posts} authors={authors} />);
+    const {site, posts, users} = this.state;
+    return (<Home site={site} posts={posts} users={users} />);
   }
 }

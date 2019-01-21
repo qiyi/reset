@@ -9,15 +9,15 @@ import './home.css';
 export interface HomeProps {
   site: WPSite
   posts: WPPost[]
-  authors: Map<number, WPAuthor>
+  users: Array<WPAuthor>
 }
 
-const Home = ({site, posts, authors}: HomeProps) => (
+const Home = ({site, posts, users}: HomeProps) => (
   <div className="page">
     <Header site={site} />
     <div className="posts">
     {
-      posts.map(post => <Post post={post} author={authors.get(post.author)} />)
+      posts.map(post => <Post post={post} author={users.find(user=>user.id === post.author)} />)
     }
     </div>
     <Footer />
