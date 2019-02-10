@@ -10,9 +10,10 @@ export interface HomeProps {
   site: WPSite
   posts: WPPost[]
   users: Array<WPAuthor>
+  page?: number
 }
 
-const Home = ({site, posts, users}: HomeProps) => (
+const Home = ({site, posts, users, page = 1}: HomeProps) => (
   <div className="page">
     <Header site={site} />
     <div className="posts">

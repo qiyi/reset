@@ -7,6 +7,7 @@ export class WPSite {
 export class WPReply {
 
 }
+
 export class WPAuthor {
   id: number
   name: string
@@ -38,3 +39,4 @@ export class WPPost {
   content: WPPostContent
   replies: WPReply[]
 }
+

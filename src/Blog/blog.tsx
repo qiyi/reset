@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { number } from 'prop-types';
-import {WPSite, WPPost, WPAuthor } from './WordPress/wordpress';
+import { WPSite, WPPost, WPAuthor } from './WordPress/wordpress';
 import Header from './Header/header';
 import Footer from './Footer/footer';
-import './blog.css'
+import './blog.css';
 import Home from './Home/home';
 
 export interface BlogProps {
@@ -27,32 +27,32 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
     this.state = {
       site: site ? Object.assign(new WPSite(), JSON.parse(site)) : new WPSite(),
       posts: posts ? Object.assign(new Array<WPPost>(), JSON.parse(posts)) : new Array<WPPost>(),
-      users: users ? Object.assign(new Array<WPAuthor>(), JSON.parse(users)): new Array<WPAuthor>(),
+      users: users ? Object.assign(new Array<WPAuthor>(), JSON.parse(users)) : new Array<WPAuthor>(),
     };
   }
 
   getSite = () => {
-    const {baseUri} = this.props;
+    const { baseUri } = this.props;
     return fetch(baseUri)
-             .then(res => res.json())
-             .then(data => Object.assign(new WPSite(), data))
+      .then(res => res.json())
+      .then(data => Object.assign(new WPSite(), data))
   }
-  
+
   getPosts = () => {
     const store = window.localStorage;
-    const {baseUri} = this.props;
+    const { baseUri } = this.props;
     return fetch(baseUri + 'wp/v2/posts?per_page=5')
-            .then(res => res.json())
-            .then(data => Object.assign(new Array<WPPost>(), data))
+      .then(res => res.json())
+      .then(data => Object.assign(new Array<WPPost>(), data))
   }
 
   getUsers = () => {
-    const {baseUri} = this.props;
+    const { baseUri } = this.props;
     return fetch(baseUri + 'wp/v2/users')
-             .then(res => res.json())
-             .then(data => Object.assign(new Array<WPAuthor>(), data))
+      .then(res => res.json())
+      .then(data => Object.assign(new Array<WPAuthor>(), data))
   }
-  
+
   async componentDidMount() {
     const store = window.localStorage;
     this.getSite()
@@ -62,7 +62,7 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
           return;
         }
         store.setItem('site', JSON.stringify(site));
-        this.setState({site}); 
+        this.setState({ site });
       })
       .catch(err => console.error(err));
     this.getPosts()
@@ -72,19 +72,19 @@ export default class Blog extends React.PureComponent<BlogProps, BlogState> {
           return;
         }
         store.setItem('posts', JSON.stringify(posts));
-        this.setState({posts});
+        this.setState({ posts });
       })
       .catch(err => console.error(err));
     this.getUsers()
       .then(users => {
         store.setItem('users', JSON.stringify(users));
-        this.setState({users});
+        this.setState({ users });
       })
       .catch(err => console.error(err));
   }
 
   render() {
-    const {site, posts, users} = this.state;
+    const { site, posts, users } = this.state;
     return (<Home site={site} posts={posts} users={users} />);
   }
 }
